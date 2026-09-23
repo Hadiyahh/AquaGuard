@@ -1,25 +1,48 @@
 # 💧 AquaGuard
 
-**AI-powered Water Health Intelligence Platform** | Detect water safety risks before they become public health crises.
+### Real-Time Water Risk Intelligence for Communities
+
+🏆 **Winner — Best UN Hack, IBM × UNSA Hackathon**
+
+AquaGuard is an AI-assisted water-risk intelligence platform that combines live environmental signals with community and prototype datasets to generate transparent, location-based water-risk assessments.
+
+🌐 **[Live Demo](https://ibmz-kyfhs.vercel.app/)**  
+🏆 **[Devpost — Best UN Hack](https://devpost.com/software/tbd-aqua-health-secure)**
+
+<img
+  width="1200"
+  alt="AquaGuard dashboard showing location-based water risk, live weather, alerts, community signals, and an AI-assisted summary"
+  src="https://github.com/user-attachments/assets/35fde3a5-803d-4e03-b294-b7f4f5e6df99"
+/>
 
 ---
 
 ## 🎯 Overview
 
-AquaGuard combines live weather and news signals with local advisory, community-report, and prototype datasets to generate transparent, location-based water-risk assessments.
+Water-safety information is often scattered across weather conditions, advisories, flood information, news, and community reports.
+
+AquaGuard brings these signals into one dashboard so users can quickly understand:
+
+- the current water-risk level for a location,
+- how confident the system is in that assessment,
+- which signals contributed to the result, and
+- a plain-language explanation of the available evidence.
 
 ### Key Features
 
-When a user enters a location, they receive:
+When a user searches for a location, AquaGuard can provide:
 
 - **Risk Level** — Low / Medium-Low / Medium / Medium-High / High
-- **Confidence Score** — How certain the system is (0-100%)
-- **AI-Generated Explanation** — Plain English summary of findings
-- **Contributing Factors** — What triggered the assessment
-- **Community Reporting** — Users can submit local water-condition reports that contribute to the prototype community-signal workflow
-- **Sustainability Insights** — Aligned with global water safety goals
+- **Risk Score** — Numerical score from 0–100
+- **Confidence Score** — Indicates how much supporting evidence is available
+- **Live Weather Data** — Environmental conditions from Open-Meteo
+- **Live News Signals** — Location-aware water and environmental news through NewsAPI
+- **Contributing Factors** — Signals that influenced the assessment
+- **Community Reporting** — Users can submit local water-condition reports
+- **AI-Assisted Explanation** — IBM watsonx.ai can convert structured findings into plain-language guidance
+- **Global Overview** — Prototype visualization showing how geographic risk patterns could be presented
 
-The global overview is a prototype country-level visualization demonstrating how AquaGuard could surface geographic risk patterns. Its country ratings are locally generated from a mixture of hardcoded and deterministic values; they are not live global contamination measurements.
+> The global overview is a prototype visualization. Country ratings are locally generated from a combination of predefined and deterministic values and should not be interpreted as live global contamination measurements.
 
 ---
 
@@ -27,99 +50,201 @@ The global overview is a prototype country-level visualization demonstrating how
 
 ### Core Philosophy
 
-**The AI does not randomly decide risk levels.**
+**Generative AI does not determine the water-risk score.**
 
-Instead, AquaGuard follows a transparent, evidence-based approach:
+AquaGuard separates deterministic risk calculation from AI-generated explanation.
 
-1. **Collect Evidence** — Combine live weather and news signals with local advisories, prototype alerts, flood zones, and community reports
-2. **Calculate Risk** — Score and confidence metrics based on real data
-3. **Explain Results** — IBM watsonx.ai can generate human-readable explanations backed by evidence; a deterministic local fallback is used when credentials are unavailable
+1. **Collect Signals**  
+   AquaGuard gathers available environmental and community information, including live Open-Meteo weather data, NewsAPI results, and prototype alert/report datasets.
 
-This makes the system **explainable**, **transparent**, and **technically sound**.
+2. **Calculate Risk**  
+   Deterministic scoring logic evaluates the available signals and produces a risk score and classification.
 
-### Real-World Example
+3. **Calculate Confidence**  
+   AquaGuard estimates how much supporting information is available for the assessment.
 
-**Scenario:** Heavy rainfall near Windsor + boil-water advisory issued + shared sewage system + multiple brown water reports
+4. **Explain the Result**  
+   When IBM watsonx.ai credentials are configured, a Granite model generates a human-readable explanation based on the structured result and supporting evidence.
 
-**Result:**
-```
-Risk Level: Medium
-Confidence: 78%
-Explanation: "Recent environmental indicators suggest moderate 
-contamination risk due to nearby flooding, shared sewage 
-infrastructure, and multiple community reports."
-```
+5. **Display Evidence**  
+   The dashboard surfaces risk level, confidence, contributing factors, weather, alerts, news, and community information.
+
+If IBM watsonx.ai is unavailable, AquaGuard can return a deterministic fallback summary instead.
 
 ### Processing Pipeline
 
+```text
+User Searches Location
+          ↓
+React + Vite Frontend
+          ↓
+Node.js + Express API
+          ↓
+┌───────────────────────────────┐
+│ Live Open-Meteo Weather       │
+│ Live NewsAPI Results          │
+│ Prototype Alerts              │
+│ Prototype Community Reports   │
+└───────────────────────────────┘
+          ↓
+Deterministic Risk Engine
+          ↓
+Risk Score + Confidence
++ Contributing Factors
+          ↓
+IBM watsonx.ai
+(when configured)
+          ↓
+Plain-Language Explanation
+          ↓
+AquaGuard Dashboard
 ```
-User Input (Location)
-         ↓
-   Backend Aggregates Data:
-      • Live weather data
-      • Live news articles
-      • Local advisories and flood-zone data
-      • Seeded alerts and community reports
-         ↓
-   Risk Engine Calculates:
-   • Score (0-100)
-   • Confidence level
-   • Risk classification
-         ↓
-      IBM watsonx.ai (when configured) Generates:
-   • Explanation
-   • Recommendations
-   • Summary
-         ↓
-   Dashboard Displays Results
+
+---
+
+## 👩‍💻 My Contribution
+
+AquaGuard was built collaboratively during the **IBM × UNSA Hackathon**.
+
+My primary contributions focused on **full-stack integration and live environmental data**:
+
+- Connected the **React + Vite frontend** with the **Node.js + Express backend**
+- Integrated live weather data using **Open-Meteo**
+- Helped integrate news, advisory, flood, and community-report signals
+- Replaced mock dashboard content with live API-backed signals where available
+- Connected external signals to the deterministic risk-scoring workflow
+- Updated dashboard components to surface live risk information
+- Added loading and fallback states for external API calls
+- Added source-verification links for live signals
+- Helped coordinate data flow between the frontend, backend, and risk engine
+- Contributed to technical documentation and the hackathon presentation
+
+🏆 AquaGuard received **Best UN Hack** at the IBM × UNSA Hackathon.
+
+---
+
+## 🏗️ Architecture
+
+```text
+                    ┌─────────────────────┐
+                    │   React + Vite UI   │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Node.js + Express   │
+                    │       API           │
+                    └──────────┬──────────┘
+                               │
+             ┌─────────────────┼─────────────────┐
+             ▼                 ▼                 ▼
+       Open-Meteo          NewsAPI        Prototype Data
+         Weather                              Sources
+             └─────────────────┼─────────────────┘
+                               ▼
+                    ┌─────────────────────┐
+                    │ Deterministic Risk  │
+                    │       Engine        │
+                    └──────────┬──────────┘
+                               │
+                      Risk + Evidence
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ IBM watsonx.ai      │
+                    │ Granite Models      │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    Human-Readable Summary
 ```
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Component | Technology |
-|-----------|------------|
-| **Frontend** | React + Vite |
-| **Backend** | Node.js + Express |
-| **AI** | IBM watsonx.ai (Granite models) |
+| Area | Technology |
+|---|---|
+| **Frontend** | React, Vite |
+| **Backend** | Node.js, Express |
+| **AI** | IBM watsonx.ai, Granite models |
+| **Weather Data** | Open-Meteo |
+| **News Data** | NewsAPI |
 | **Styling** | Tailwind CSS |
-| **Cloud** | IBM Cloud |
+| **Architecture** | REST APIs |
+| **Cloud / AI Authentication** | IBM Cloud, IBM IAM |
 
 ---
 
 ## ⚙️ Risk Scoring Logic
 
-### Example Weights
+AquaGuard uses deterministic scoring rules rather than asking a generative AI model to decide the water-risk level.
 
-| Factor | Score |
-|--------|-------|
+### Example Prototype Weights
+
+| Signal | Example Weight |
+|---|---:|
 | Boil-water advisory | +50 |
 | Flood warning | +20 |
 | Sewage overflow risk | +15 |
 | Multiple community reports | +10 |
 
-### Risk Level Scale
+### Risk Classification
 
 | Score | Classification |
-|-------|-----------------|
+|---:|---|
 | 0–24 | Low |
 | 25–39 | Medium-Low |
 | 40–59 | Medium |
 | 60–79 | Medium-High |
 | 80–100 | High |
 
+> The current hackathon prototype combines live signals with seeded and locally generated data. These values demonstrate the scoring architecture rather than representing a production water-quality model.
+
 ---
 
-## 🌍 Sustainability Alignment
+## 🏆 Hackathon Recognition
 
-**Primary SDG:** SDG 6 — Clean Water and Sanitation
+AquaGuard was developed for the **IBM × UNSA Hackathon** and received:
 
-**Supporting SDGs:**
-- 🏥 SDG 3 — Good Health and Well-Being
-- 🏗️ SDG 9 — Industry, Innovation and Infrastructure
-- 🏙️ SDG 11 — Sustainable Cities and Communities
-- 🌡️ SDG 13 — Climate Action
+### 🏆 Winner — Best UN Hack
+
+The project was designed around the United Nations Sustainable Development Goals, with its primary focus on:
+
+### SDG 6 — Clean Water and Sanitation
+
+Supporting areas include:
+
+- 🏥 **SDG 3** — Good Health and Well-Being
+- 🏗️ **SDG 9** — Industry, Innovation and Infrastructure
+- 🏙️ **SDG 11** — Sustainable Cities and Communities
+- 🌡️ **SDG 13** — Climate Action
+
+➡️ **[View the winning Devpost submission](https://devpost.com/software/tbd-aqua-health-secure)**
+
+---
+
+## ⚠️ Prototype Boundaries
+
+AquaGuard is a hackathon prototype rather than a production water-monitoring platform.
+
+Current limitations include:
+
+- Dashboard alerts begin with seeded prototype data
+- Community reports begin with seeded records and new submissions are stored in memory rather than a durable database
+- Submitted reports are lost when the backend restarts
+- The global overview uses locally generated prototype country ratings rather than live global contamination measurements
+- The leaderboard contains seeded demo users and scores
+- User accounts and profile information are stored locally in browser `localStorage`
+- The current login flow is prototype authentication and should not be treated as production security
+- Some advisory and flood-data integrations exist in the project but are not yet fully connected to the active dashboard risk calculation
+- IBM watsonx.ai summaries require valid IBM Cloud credentials
+- News results depend on NewsAPI availability and relevance filtering
+
+For a more detailed breakdown, see:
+
+- [Data Sources & Prototype Boundaries](docs/data-sources.md)
+- [Architecture](docs/architecture.md)
 
 ---
 
@@ -127,45 +252,35 @@ User Input (Location)
 
 ### Prerequisites
 
-- **Node.js 18+**
-- **IBM watsonx.ai credentials** (optional; enables live AI summaries)
-- **NewsAPI key** (optional; enables live news results)
+- Node.js 18+
+- npm
+- IBM watsonx.ai credentials *(optional; enables AI-generated summaries)*
+- NewsAPI key *(optional; enables live news results)*
 
-### Quick Setup
+### Clone the Repository
 
 ```bash
-# Clone and navigate
-git clone <repo-url>
-cd IBMZ_KYFHS/aquaguard
-
-# Install dependencies
-cd frontend && npm install
-cd ../backend && npm install
-
-# Configure backend
-cd backend
-cp .env.example .env
-# Edit .env with your IBM watsonx credentials
-# Add NEWSAPI_KEY to .env for live news results
+git clone https://github.com/Hadiyahh/AquaGuard.git
+cd AquaGuard/aquaguard
 ```
 
-### Run Local Development
+### Install Frontend Dependencies
 
-**Terminal 1 — Backend:**
 ```bash
-cd aquaguard/backend
-npm start
-# API runs on http://localhost:4000
+cd frontend
+npm install
 ```
 
-**Terminal 2 — Frontend:**
+### Install Backend Dependencies
+
 ```bash
-cd aquaguard/frontend
-npm run dev
-# Dashboard runs on http://localhost:5173
+cd ../backend
+npm install
 ```
 
-### Environment Variables (Backend)
+### Configure Environment Variables
+
+Create a `.env` file in the backend directory.
 
 ```env
 # IBM watsonx.ai
@@ -175,129 +290,202 @@ WATSONX_BASE_URL=https://us-south.ml.cloud.ibm.com
 WATSONX_MODEL_ID=<optional>
 WATSONX_TIMEOUT_MS=10000
 
-# Optional security
+# News
+NEWSAPI_KEY=<your-newsapi-key>
+
+# Optional API protection
 API_SHARED_TOKEN=<optional-token-for-post-requests>
 ```
 
-### Useful Commands
-
-**Backend:**
-```bash
-npm start          # Start API server
-npm run smoke      # Run smoke tests
-npm run test:contract  # Validate API contracts
-```
-
-**Frontend:**
-```bash
-npm run dev        # Development server
-npm run build      # Production build
-npm run preview    # Preview production build
-```
-
-### Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| `EADDRINUSE: 4000` | Kill the process on port 4000 and retry |
-| Port 5173 conflict | Stop process on 5173 and retry frontend |
+> Never commit API keys, passwords, or credentials to source control.
 
 ---
 
-## 📡 API Reference
+## ▶️ Run Locally
 
-**Base URL:** `http://localhost:4000`
-
-### Endpoints
-
-| Endpoint | Method | Input | Output |
-|----------|--------|-------|--------|
-| `/health` | GET | — | `status`, `service` |
-| `/risk` | GET | `location` | `risk`, `confidence`, `riskScore`, `factors` |
-| `/alerts` | GET | `location` (optional) | `alerts[]` |
-| `/summary` | GET | `location` | `risk`, `summary`, `factors` |
-| `/report` | POST | `location`, `issueType`, `description` | `message`, `report` |
-| `/statistics/overview` | GET | — | `totalCompanies`, `uniqueCountries` |
-| `/user/companies` | GET | `limit` (optional) | `Company[]` |
-| `/countries` | GET | — | `Country[]` |
-
-## Prototype Boundaries
-
-- Community reports begin with seeded records and new backend submissions are stored in memory, not a durable database.
-- Browser accounts, passwords, profile points, and personal reports use local prototype authentication backed by browser `localStorage`; this is not production authentication.
-- The leaderboard contains seeded demo users and scores.
-- The global overview uses locally generated prototype country ratings rather than live global measurements.
-
-## Documentation
-
-- [Data Sources & Prototype Boundaries](docs/data-sources.md)
-- [Architecture](docs/architecture.md)
-
-### Example Requests
+### Start the Backend
 
 ```bash
-# Get risk for a location
-curl -sG "http://localhost:4000/risk" --data-urlencode "location=Mumbai, MH"
+cd aquaguard/backend
+npm start
+```
 
-# Get AI summary
-curl -sG "http://localhost:4000/summary" --data-urlencode "location=Mumbai, MH"
+The backend runs at:
 
-# Report a water issue
+```text
+http://localhost:4000
+```
+
+### Start the Frontend
+
+In another terminal:
+
+```bash
+cd aquaguard/frontend
+npm run dev
+```
+
+The frontend runs at:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## 🧪 Useful Commands
+
+### Backend
+
+```bash
+npm start
+npm run smoke
+npm run test:contract
+```
+
+### Frontend
+
+```bash
+npm run dev
+npm run build
+npm run preview
+```
+
+---
+
+## 📡 API Overview
+
+The backend exposes REST endpoints used by the AquaGuard frontend.
+
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/health` | GET | Backend health check |
+| `/risk` | GET | Calculate risk for a location |
+| `/alerts` | GET | Retrieve alert records |
+| `/summary` | GET | Retrieve an AI-assisted or fallback summary |
+| `/report` | POST | Submit a water-condition report |
+| `/statistics/overview` | GET | Retrieve prototype overview statistics |
+| `/user/companies` | GET | Retrieve prototype organization data |
+| `/countries` | GET | Retrieve available country data |
+
+### Example Risk Request
+
+```bash
+curl -sG "http://localhost:4000/risk" \
+  --data-urlencode "location=Calgary, AB"
+```
+
+### Example Summary Request
+
+```bash
+curl -sG "http://localhost:4000/summary" \
+  --data-urlencode "location=Calgary, AB"
+```
+
+### Example Community Report
+
+```bash
 curl -X POST "http://localhost:4000/report" \
   -H "Content-Type: application/json" \
   -d '{
-    "location": "Mumbai, MH",
+    "location": "Windsor, ON",
     "issueType": "cloudy water",
     "description": "Water appears cloudy this morning."
   }'
 ```
 
-### Example Responses
+---
 
-**`GET /risk?location=Mumbai, MH`**
-```json
-{
-  "location": "Mumbai, MH",
-  "risk": "Safe",
-  "confidence": 71,
-  "riskScore": 30,
-  "factors": ["flood warning", "multiple community reports"],
-  "alerts": [],
-  "reports": [],
-  "generatedAt": "2026-05-09T23:40:00.000Z"
-}
-```
+## 🔐 Rate Limits & API Protection
 
-### Rate Limits & Security
-
-| Policy | Limit |
-|--------|-------|
-| `/summary` rate limit | 25 req/min per IP |
-| `/report` rate limit | 15 req/min per IP |
-| Optional auth guard | `API_SHARED_TOKEN` header if configured |
+| Policy | Current Limit |
+|---|---|
+| `/summary` | 25 requests/minute per IP |
+| `/report` | 15 requests/minute per IP |
+| Optional API guard | `API_SHARED_TOKEN` when configured |
 
 ---
 
 ## 📁 Project Structure
 
-```
-ibmz_kyfhs/
+```text
+AquaGuard/
 ├── aquaguard/
-│   ├── backend/           # Node.js + Express API
-│   │   ├── routes/        # API endpoints
-│   │   ├── services/      # Business logic
-│   │   ├── lib/           # Utilities (risk engine, etc.)
-│   │   └── data/          # Mock & config data
+│   ├── backend/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── lib/
+│   │   ├── data/
+│   │   └── server.js
 │   │
-│   └── frontend/          # React + Vite
+│   └── frontend/
 │       ├── src/
-│       │   ├── components/  # Reusable components
-│       │   ├── pages/       # Page components
-│       │   ├── api/         # API client
-│       │   └── services/    # Frontend utilities
+│       │   ├── api/
+│       │   ├── components/
+│       │   ├── pages/
+│       │   ├── services/
+│       │   └── utils/
 │       │
-│       └── index.html     # Entry point
+│       └── index.html
 │
-└── README.md              # This file
+├── docs/
+│   ├── architecture.md
+│   └── data-sources.md
+│
+└── README.md
 ```
 
+---
+
+## 📚 Documentation
+
+More detailed technical information is available in:
+
+- [Architecture](docs/architecture.md)
+- [Data Sources & Prototype Boundaries](docs/data-sources.md)
+
+---
+
+## 🔮 Future Improvements
+
+Potential next steps include:
+
+- Improve environmental-news relevance filtering
+- Connect additional advisory and flood-data services to the active risk engine
+- Replace seeded alert/report data with durable live sources
+- Add PostgreSQL or another persistent data store
+- Replace local prototype authentication with secure backend authentication
+- Improve risk-score calibration using validated environmental datasets
+- Add multilingual support
+- Add alert subscriptions for changing local conditions
+- Add stronger community-report validation
+- Expand observability and API monitoring
+- Add production-grade deployment infrastructure
+
+---
+
+## 👥 Team
+
+AquaGuard was built collaboratively by:
+
+- **Hadiyah Arif**
+- **Faria Islam**
+- **Sura Gaafar**
+- **Yusriyah Rahman**
+- **Karanveer Singh Sidhu**
+
+---
+
+## 🔗 Links
+
+🌐 **[Live Demo](https://ibmz-kyfhs.vercel.app/)**  
+🏆 **[Devpost — Best UN Hack](https://devpost.com/software/tbd-aqua-health-secure)**  
+💻 **[GitHub Repository](https://github.com/Hadiyahh/AquaGuard)**
+
+---
+
+## ⚠️ Disclaimer
+
+AquaGuard is an educational hackathon prototype intended to explore environmental-data aggregation, deterministic risk scoring, community reporting, and AI-assisted communication.
+
+It should **not** be used as a substitute for official municipal water advisories, public-health guidance, emergency alerts, or professional environmental testing.
