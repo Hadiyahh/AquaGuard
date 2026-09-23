@@ -464,26 +464,6 @@ Potential next steps include:
 
 ---
 
-## 👥 Team
-
-AquaGuard was built collaboratively by:
-
-- **Hadiyah Arif**
-- **Faria Islam**
-- **Sura Gaafar**
-- **Yusriyah Rahman**
-- **Karanveer Singh Sidhu**
-
----
-
-## 🔗 Links
-
-🌐 **[Live Demo](https://ibmz-kyfhs.vercel.app/)**  
-🏆 **[Devpost — Best UN Hack](https://devpost.com/software/tbd-aqua-health-secure)**  
-💻 **[GitHub Repository](https://github.com/Hadiyahh/AquaGuard)**
-
----
-
 ## ⚠️ Disclaimer
 
 AquaGuard is an educational hackathon prototype intended to explore environmental-data aggregation, deterministic risk scoring, community reporting, and AI-assisted communication.
