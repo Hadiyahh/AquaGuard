@@ -14,7 +14,7 @@ Real news searches for water incidents:
 - **Source**: NewsAPI global news aggregator
 - **Queries**: "[City] boil water", "[City] flooding", "[City] sewage", "[City] water main break"
 - **Display**: Recent news articles in Report page + news context in Dashboard
-- **API Key**: Configured (5683e6bbe764465ca020de603c9220c5)
+- **API Key**: Configure `NEWSAPI_KEY` in the backend environment; no key is committed to the repository.
 
 ---
 
@@ -134,7 +134,7 @@ curl "http://localhost:3001/api/news/search?city=Windsor&province=ON"
 ```
 
 ### NewsAPI
-**Configured Key**: `5683e6bbe764465ca020de603c9220c5`
+Configure `NEWSAPI_KEY` in the backend environment. Never commit API keys to source or documentation.
 **Search Queries**: 
 - `{city} boil water advisory`
 - `{city} flooding water`

@@ -4,7 +4,7 @@
  * @see https://newsapi.org/docs/endpoints/everything
  */
 
-const NEWSAPI_KEY = process.env.NEWSAPI_KEY || "5683e6bbe764465ca020de603c9220c5";
+const NEWSAPI_KEY = process.env.NEWSAPI_KEY || "";
 const NEWSAPI_ENDPOINT = "https://newsapi.org/v2/everything";
 
 let newsApi429Logged = false;

@@ -6,7 +6,7 @@
 
 ## 🎯 Overview
 
-AquaGuard combines scattered water data from multiple sources—advisories, flood warnings, contamination risks, infrastructure issues, and community reports—into one intelligent dashboard that helps communities make informed decisions about water safety.
+AquaGuard combines live weather and news signals with local advisory, community-report, and prototype datasets to generate transparent, location-based water-risk assessments.
 
 ### Key Features
 
@@ -16,8 +16,10 @@ When a user enters a location, they receive:
 - **Confidence Score** — How certain the system is (0-100%)
 - **AI-Generated Explanation** — Plain English summary of findings
 - **Contributing Factors** — What triggered the assessment
-- **Community Reports** — Real-time alerts from residents
+- **Community Reporting** — Users can submit local water-condition reports that contribute to the prototype community-signal workflow
 - **Sustainability Insights** — Aligned with global water safety goals
+
+The global overview is a prototype country-level visualization demonstrating how AquaGuard could surface geographic risk patterns. Its country ratings are locally generated from a mixture of hardcoded and deterministic values; they are not live global contamination measurements.
 
 ---
 
@@ -29,9 +31,9 @@ When a user enters a location, they receive:
 
 Instead, AquaGuard follows a transparent, evidence-based approach:
 
-1. **Collect Evidence** — Aggregate water advisories, weather alerts, news, reports, infrastructure data
+1. **Collect Evidence** — Combine live weather and news signals with local advisories, prototype alerts, flood zones, and community reports
 2. **Calculate Risk** — Score and confidence metrics based on real data
-3. **Explain Results** — IBM AI generates human-readable explanations backed by evidence
+3. **Explain Results** — IBM watsonx.ai can generate human-readable explanations backed by evidence; a deterministic local fallback is used when credentials are unavailable
 
 This makes the system **explainable**, **transparent**, and **technically sound**.
 
@@ -54,18 +56,17 @@ infrastructure, and multiple community reports."
 User Input (Location)
          ↓
    Backend Aggregates Data:
-   • Water advisories
-   • Weather/flood alerts
-   • News articles
-   • Community reports
-   • Infrastructure data
+      • Live weather data
+      • Live news articles
+      • Local advisories and flood-zone data
+      • Seeded alerts and community reports
          ↓
    Risk Engine Calculates:
    • Score (0-100)
    • Confidence level
    • Risk classification
          ↓
-   IBM watsonx.ai Generates:
+      IBM watsonx.ai (when configured) Generates:
    • Explanation
    • Recommendations
    • Summary
@@ -127,7 +128,8 @@ User Input (Location)
 ### Prerequisites
 
 - **Node.js 18+**
-- **IBM watsonx.ai credentials** (for live AI features)
+- **IBM watsonx.ai credentials** (optional; enables live AI summaries)
+- **NewsAPI key** (optional; enables live news results)
 
 ### Quick Setup
 
@@ -144,6 +146,7 @@ cd ../backend && npm install
 cd backend
 cp .env.example .env
 # Edit .env with your IBM watsonx credentials
+# Add NEWSAPI_KEY to .env for live news results
 ```
 
 ### Run Local Development
@@ -217,6 +220,18 @@ npm run preview    # Preview production build
 | `/statistics/overview` | GET | — | `totalCompanies`, `uniqueCountries` |
 | `/user/companies` | GET | `limit` (optional) | `Company[]` |
 | `/countries` | GET | — | `Country[]` |
+
+## Prototype Boundaries
+
+- Community reports begin with seeded records and new backend submissions are stored in memory, not a durable database.
+- Browser accounts, passwords, profile points, and personal reports use local prototype authentication backed by browser `localStorage`; this is not production authentication.
+- The leaderboard contains seeded demo users and scores.
+- The global overview uses locally generated prototype country ratings rather than live global measurements.
+
+## Documentation
+
+- [Data Sources & Prototype Boundaries](docs/data-sources.md)
+- [Architecture](docs/architecture.md)
 
 ### Example Requests
 
